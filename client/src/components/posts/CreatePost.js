@@ -1,0 +1,45 @@
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addPost } from "../../actions/post";
+import { setAlert } from "../../actions/alert";
+
+const CreatePost = ({ addPost, setAlert }) => {
+  const [text, setText] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!text) {
+      setAlert("Please enter some text", "danger");
+      return;
+    }
+    addPost({ text });
+    setText("");
+  }
+
+  return (
+    <div className="post-form">
+      <div className="bg-primary p">
+        <h3>Say Something...</h3>
+      </div>
+      <form className="form my-1" onSubmit={handleSubmit}>
+        <textarea
+          name="text"
+          cols="30"
+          rows="5"
+          placeholder="Create a post"
+          // required
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        ></textarea>
+        <input type="submit" className="btn btn-dark my-1" value="Submit" />
+      </form>
+    </div>
+  );
+};
+
+CreatePost.propTypes = {
+  addPost: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+};
+export default connect(null, { addPost, setAlert })(CreatePost);
